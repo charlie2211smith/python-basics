@@ -2,6 +2,7 @@ import yfinance as yf
 from dotenv import load_dotenv
 from os import getenv
 from openai import OpenAI
+from ai.prompts import stock_analysis_prompt
 load_dotenv()
 stock = yf.Ticker("AVGO")
 data = stock.history(period="1mo")
@@ -15,7 +16,7 @@ completion = client.chat.completions.create(
                 },
                 {
                     "role": "user",
-                    "content": f"Analyze this stock data and tell me if you see any patterns. Here is the data {data}."
+                    "content": stock_analysis_prompt(data)
                 },
             ],
         )
